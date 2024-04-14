@@ -10,6 +10,7 @@ from queue import Queue
 from subprocess import PIPE, Popen
 from typing import Any, Dict, List
 
+import defusedxml.ElementTree
 import psutil
 import torch
 from cpuinfo import get_cpu_info
@@ -20,7 +21,6 @@ from ludwig.benchmarking.reporting import get_metrics_from_system_usage_profiler
 from ludwig.constants import LUDWIG_TAG
 from ludwig.globals import LUDWIG_VERSION
 from ludwig.utils.data_utils import save_json
-import defusedxml.ElementTree
 
 STOP_MESSAGE = "stop"
 logger = logging.getLogger()
