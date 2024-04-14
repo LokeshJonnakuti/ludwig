@@ -9,7 +9,6 @@ from queue import Empty as EmptyQueueException
 from queue import Queue
 from subprocess import PIPE, Popen
 from typing import Any, Dict, List
-from xml.etree.ElementTree import fromstring
 
 import psutil
 import torch
@@ -21,6 +20,7 @@ from ludwig.benchmarking.reporting import get_metrics_from_system_usage_profiler
 from ludwig.constants import LUDWIG_TAG
 from ludwig.globals import LUDWIG_VERSION
 from ludwig.utils.data_utils import save_json
+import defusedxml.ElementTree
 
 STOP_MESSAGE = "stop"
 logger = logging.getLogger()
@@ -35,7 +35,7 @@ def get_gpu_info():
     """
     p = Popen(["nvidia-smi", "-q", "-x"], stdout=PIPE)
     outs, errors = p.communicate()
-    xml = fromstring(outs)
+    xml = defusedxml.ElementTree.fromstring(outs)
     data = []
     driver_version = xml.findall("driver_version")[0].text
     cuda_version = xml.findall("cuda_version")[0].text
