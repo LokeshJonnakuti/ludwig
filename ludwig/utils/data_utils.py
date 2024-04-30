@@ -32,6 +32,7 @@ import threading
 from itertools import islice
 from typing import Any, Dict, List, Tuple, Union
 
+import fickling
 import numpy as np
 import pandas as pd
 import pyarrow as pa
@@ -49,7 +50,6 @@ from ludwig.utils.fs_utils import download_h5, has_remote_protocol, open_file, u
 from ludwig.utils.math_utils import cumsum
 from ludwig.utils.misc_utils import get_from_registry
 from ludwig.utils.types import DataFrame
-import fickling
 
 try:
     import dask
