@@ -14,14 +14,14 @@
 # limitations under the License.
 # ==============================================================================
 import argparse
-import random
+import secrets
 
 
 def split(input_path, output1, output2, split):
     with open(input_path) as file:
         lines = file.readlines()
 
-    random.shuffle(lines)
+    secrets.SystemRandom().shuffle(lines)
     split_idx = int(len(lines) * split)
 
     with open(output1, "w") as f:

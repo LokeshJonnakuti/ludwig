@@ -1,5 +1,4 @@
 import copy
-import random
 from collections import deque, namedtuple
 from typing import Any, Deque, Dict, List, Tuple, Union
 
@@ -11,6 +10,7 @@ from ludwig.data.dataset_synthesizer import build_synthetic_dataset_df
 from ludwig.schema.model_types.base import ModelConfig
 from ludwig.types import ModelConfigDict
 from ludwig.utils.misc_utils import merge_dict
+import secrets
 
 # number of examples to generate for synthetic dataset
 NUM_SYNTHETIC_EXAMPLES = 10
@@ -265,8 +265,8 @@ def combine_configs_for_comparator_combiner(
 
             # create two random lists for entity1 and entity2
             entity_names = [feature["name"] for feature in config["input_features"]]
-            random.shuffle(entity_names)
-            entity_1_size = random.randint(1, len(entity_names) - 1)
+            secrets.SystemRandom().shuffle(entity_names)
+            entity_1_size = secrets.SystemRandom().randint(1, len(entity_names) - 1)
             merged_config["combiner"]["entity_1"] = entity_names[:entity_1_size]
             merged_config["combiner"]["entity_2"] = entity_names[entity_1_size:]
             try:
