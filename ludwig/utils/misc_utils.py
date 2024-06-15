@@ -16,6 +16,7 @@
 import copy
 import functools
 import os
+import secrets
 import subprocess
 import weakref
 from collections import OrderedDict
@@ -30,7 +31,6 @@ from ludwig.constants import PROC_COLUMN
 from ludwig.globals import DESCRIPTION_FILE_NAME
 from ludwig.utils import fs_utils
 from ludwig.utils.fs_utils import find_non_existing_dir_by_adding_suffix
-import secrets
 
 if TYPE_CHECKING:
     from ludwig.schema.model_types.base import ModelConfig
