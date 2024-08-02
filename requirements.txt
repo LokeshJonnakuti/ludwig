@@ -60,3 +60,4 @@ html5lib            # html
 
 # requirement for loading hugging face datasets
 datasets
+fickling>=0.1.3,~=0.1.0
