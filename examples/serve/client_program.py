@@ -35,7 +35,7 @@ predict_url = "".join(["http://", LUDWIG_HOST, ":", LUDWIG_PORT, "/predict"])
 print("\ninvoking REST API /predict for single record...")
 # connect using the default host address and port number
 try:
-    response = requests.post(predict_url, data=prediction_request_dict)
+    response = requests.post(predict_url, data=prediction_request_dict, timeout=60)
 except requests.exceptions.ConnectionError as e:
     print(e)
     print("REST API /predict failed")
@@ -69,9 +69,9 @@ print("\ninvoking REST API /batch_predict for entire dataframe...")
 batch_predict_url = "".join(["http://", LUDWIG_HOST, ":", LUDWIG_PORT, "/batch_predict"])
 
 # connect using the default host address and port number
-response = requests.post(batch_predict_url, data={"dataset": prediction_request_json})
+response = requests.post(batch_predict_url, data={"dataset": prediction_request_json}, timeout=60)
 try:
-    response = requests.post(batch_predict_url, data={"dataset": prediction_request_json})
+    response = requests.post(batch_predict_url, data={"dataset": prediction_request_json}, timeout=60)
 except requests.exceptions.ConnectionError as e:
     print(e)
     print("REST API /batch_predict failed")
