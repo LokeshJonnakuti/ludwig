@@ -1,7 +1,7 @@
+import secrets
 from typing import Any, Dict, List, Union
 
 from ludwig.schema.metadata.parameter_metadata import ExpectedImpact
-import secrets
 
 # base types for ludwig config parameters.
 ParameterBaseTypes = Union[str, float, int, bool, None]

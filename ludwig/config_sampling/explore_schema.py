@@ -1,4 +1,5 @@
 import copy
+import secrets
 from collections import deque, namedtuple
 from typing import Any, Deque, Dict, List, Tuple, Union
 
@@ -10,7 +11,6 @@ from ludwig.data.dataset_synthesizer import build_synthetic_dataset_df
 from ludwig.schema.model_types.base import ModelConfig
 from ludwig.types import ModelConfigDict
 from ludwig.utils.misc_utils import merge_dict
-import secrets
 
 # number of examples to generate for synthetic dataset
 NUM_SYNTHETIC_EXAMPLES = 10

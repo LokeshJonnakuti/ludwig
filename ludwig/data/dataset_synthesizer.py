@@ -16,6 +16,7 @@
 import argparse
 import logging
 import os
+import secrets
 import string
 import sys
 import uuid
@@ -58,7 +59,6 @@ from ludwig.utils.data_utils import save_csv
 from ludwig.utils.h3_util import components_to_h3
 from ludwig.utils.misc_utils import get_from_registry
 from ludwig.utils.print_utils import print_ludwig
-import secrets
 
 logger = logging.getLogger(__name__)
 
@@ -254,7 +254,9 @@ def generate_number(feature, outdir: Optional[str] = None) -> int:
 
     `outdir` is unused.
     """
-    return secrets.SystemRandom().uniform(feature["min"] if "min" in feature else 0, feature["max"] if "max" in feature else 1)
+    return secrets.SystemRandom().uniform(
+        feature["min"] if "min" in feature else 0, feature["max"] if "max" in feature else 1
+    )
 
 
 def generate_binary(feature, outdir: Optional[str] = None) -> bool:
