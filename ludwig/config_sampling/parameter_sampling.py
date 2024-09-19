@@ -1,7 +1,7 @@
-import random
 from typing import Any, Dict, List, Union
 
 from ludwig.schema.metadata.parameter_metadata import ExpectedImpact
+import secrets
 
 # base types for ludwig config parameters.
 ParameterBaseTypes = Union[str, float, int, bool, None]
@@ -96,7 +96,7 @@ def explore_number(item: Dict[str, Any]) -> List[ParameterBaseTypes]:
     if "maximum" in item:
         maximum = item["maximum"]
         candidates = [num for num in candidates if num < maximum]
-    return candidates + [random.random() * 0.99 * maximum]
+    return candidates + [secrets.SystemRandom().random() * 0.99 * maximum]
 
 
 def explore_integer(item: Dict[str, Any]) -> List[ParameterBaseTypes]:
@@ -120,7 +120,7 @@ def explore_integer(item: Dict[str, Any]) -> List[ParameterBaseTypes]:
         maximum = item["maximum"]
         candidates = [num for num in candidates if num <= item["maximum"]]
 
-    return candidates + [random.randint(minimum, maximum)]
+    return candidates + [secrets.SystemRandom().randint(minimum, maximum)]
 
 
 def explore_string(item: Dict[str, Any]) -> List[ParameterBaseTypes]:

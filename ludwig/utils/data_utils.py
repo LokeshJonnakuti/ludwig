@@ -25,7 +25,6 @@ import logging
 import os
 import os.path
 import pickle
-import random
 import re
 import tempfile
 import threading
@@ -49,6 +48,7 @@ from ludwig.utils.fs_utils import download_h5, has_remote_protocol, open_file, u
 from ludwig.utils.math_utils import cumsum
 from ludwig.utils.misc_utils import get_from_registry
 from ludwig.utils.types import DataFrame
+import secrets
 
 try:
     import dask
@@ -618,7 +618,7 @@ def load_glove(file_path: str, return_embedding_size: bool = False) -> Dict[str,
 @DeveloperAPI
 def split_data(split: float, data: List) -> Tuple[List, List]:
     split_length = int(round(split * len(data)))
-    random.shuffle(data)
+    secrets.SystemRandom().shuffle(data)
     return data[:split_length], data[split_length:]
 
 

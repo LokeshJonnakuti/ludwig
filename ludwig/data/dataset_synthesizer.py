@@ -16,7 +16,6 @@
 import argparse
 import logging
 import os
-import random
 import string
 import sys
 import uuid
@@ -59,6 +58,7 @@ from ludwig.utils.data_utils import save_csv
 from ludwig.utils.h3_util import components_to_h3
 from ludwig.utils.misc_utils import get_from_registry
 from ludwig.utils.print_utils import print_ludwig
+import secrets
 
 logger = logging.getLogger(__name__)
 
@@ -117,14 +117,14 @@ def _get_feature_encoder_or_decoder(feature):
 def generate_string(length):
     sequence = []
     for _ in range(length):
-        sequence.append(random.choice(letters))
+        sequence.append(secrets.choice(letters))
     return "".join(sequence)
 
 
 def build_vocab(size):
     vocab = []
     for _ in range(size):
-        vocab.append(generate_string(random.randint(2, 10)))
+        vocab.append(generate_string(secrets.SystemRandom().randint(2, 10)))
     return vocab
 
 
@@ -246,7 +246,7 @@ def generate_category(feature, outdir: Optional[str] = None) -> str:
     `outdir` is unused.
     """
     encoder_or_decoder = _get_feature_encoder_or_decoder(feature)
-    return random.choice(encoder_or_decoder["idx2str"])
+    return secrets.choice(encoder_or_decoder["idx2str"])
 
 
 def generate_number(feature, outdir: Optional[str] = None) -> int:
@@ -254,7 +254,7 @@ def generate_number(feature, outdir: Optional[str] = None) -> int:
 
     `outdir` is unused.
     """
-    return random.uniform(feature["min"] if "min" in feature else 0, feature["max"] if "max" in feature else 1)
+    return secrets.SystemRandom().uniform(feature["min"] if "min" in feature else 0, feature["max"] if "max" in feature else 1)
 
 
 def generate_binary(feature, outdir: Optional[str] = None) -> bool:
@@ -275,8 +275,8 @@ def generate_sequence(feature, outdir: Optional[str] = None) -> str:
     encoder_or_decoder = _get_feature_encoder_or_decoder(feature)
     length = encoder_or_decoder.get("max_len", 10)
     if "min_len" in encoder_or_decoder:
-        length = random.randint(encoder_or_decoder["min_len"], length)
-    sequence = [random.choice(encoder_or_decoder["idx2str"]) for _ in range(length)]
+        length = secrets.SystemRandom().randint(encoder_or_decoder["min_len"], length)
+    sequence = [secrets.choice(encoder_or_decoder["idx2str"]) for _ in range(length)]
     encoder_or_decoder["vocab_size"] = (
         encoder_or_decoder["vocab_size"] + 4
     )  # For special symbols: START, STOP, PAD, UNK.
@@ -290,8 +290,8 @@ def generate_set(feature, outdir: Optional[str] = None) -> str:
     """
     encoder_or_decoder = _get_feature_encoder_or_decoder(feature)
     elems = []
-    for _ in range(random.randint(0, encoder_or_decoder.get("max_len", 3))):
-        elems.append(random.choice(encoder_or_decoder["idx2str"]))
+    for _ in range(secrets.SystemRandom().randint(0, encoder_or_decoder.get("max_len", 3))):
+        elems.append(secrets.choice(encoder_or_decoder["idx2str"]))
     return " ".join(list(set(elems)))
 
 
@@ -302,8 +302,8 @@ def generate_bag(feature, outdir: Optional[str] = None) -> str:
     """
     encoder_or_decoder = _get_feature_encoder_or_decoder(feature)
     elems = []
-    for _ in range(random.randint(0, encoder_or_decoder.get("max_len", 3))):
-        elems.append(random.choice(encoder_or_decoder["idx2str"]))
+    for _ in range(secrets.SystemRandom().randint(0, encoder_or_decoder.get("max_len", 3))):
+        elems.append(secrets.choice(encoder_or_decoder["idx2str"]))
     return " ".join(elems)
 
 
@@ -315,8 +315,8 @@ def generate_text(feature, outdir: Optional[str] = None) -> str:
     encoder_or_decoder = _get_feature_encoder_or_decoder(feature)
     length = encoder_or_decoder.get("max_len", 10)
     text = []
-    for _ in range(random.randint(length - int(length * 0.2), length)):
-        text.append(random.choice(encoder_or_decoder["idx2str"]))
+    for _ in range(secrets.SystemRandom().randint(length - int(length * 0.2), length)):
+        text.append(secrets.choice(encoder_or_decoder["idx2str"]))
     return " ".join(text)
 
 
@@ -328,9 +328,9 @@ def generate_timeseries(feature, max_len=10, outdir: Optional[str] = None) -> st
     encoder = _get_feature_encoder_or_decoder(feature)
     series = []
     max_len = encoder.get("max_len", max_len)
-    series_len = random.randint(max_len - 2, max_len)  # simulates variable length
+    series_len = secrets.SystemRandom().randint(max_len - 2, max_len)  # simulates variable length
     for _ in range(series_len):
-        series.append(str(random.uniform(encoder.get("min", 0), encoder.get("max", 1))))
+        series.append(str(secrets.SystemRandom().uniform(encoder.get("min", 0), encoder.get("max", 1))))
     return " ".join(series)
 
 
@@ -430,13 +430,13 @@ def generate_datetime(feature, outdir: Optional[str] = None) -> str:
     else:
         datetime_generation_format = DATETIME_FORMATS[next(iter(DATETIME_FORMATS))]
 
-    y = random.randint(1, 99)
-    Y = random.randint(1, 9999)
-    m = random.randint(1, 12)
-    d = random.randint(1, 28)
-    H = random.randint(1, 12)
-    M = random.randint(1, 59)
-    S = random.randint(1, 59)
+    y = secrets.SystemRandom().randint(1, 99)
+    Y = secrets.SystemRandom().randint(1, 9999)
+    m = secrets.SystemRandom().randint(1, 12)
+    d = secrets.SystemRandom().randint(1, 28)
+    H = secrets.SystemRandom().randint(1, 12)
+    M = secrets.SystemRandom().randint(1, 59)
+    S = secrets.SystemRandom().randint(1, 59)
 
     return datetime_generation_format.format(y=y, Y=Y, m=m, d=d, H=H, M=M, S=S)
 
@@ -446,14 +446,14 @@ def generate_h3(feature, outdir: Optional[str] = None) -> str:
 
     `outdir` is unused.
     """
-    resolution = random.randint(0, 15)  # valid values [0, 15]
+    resolution = secrets.SystemRandom().randint(0, 15)  # valid values [0, 15]
     h3_components = {
         "mode": 1,  # we can avoid testing other modes
         "edge": 0,  # only used in other modes
         "resolution": resolution,
-        "base_cell": random.randint(0, 121),  # valid values [0, 121]
+        "base_cell": secrets.SystemRandom().randint(0, 121),  # valid values [0, 121]
         # valid values [0, 7]
-        "cells": [random.randint(0, 7) for _ in range(resolution)],
+        "cells": [secrets.SystemRandom().randint(0, 7) for _ in range(resolution)],
     }
 
     return components_to_h3(h3_components)
@@ -469,7 +469,7 @@ def generate_vector(feature, outdir: Optional[str] = None) -> str:
         vector_size = feature[PREPROCESSING].get("vector_size", 10)
     else:
         vector_size = feature.get("vector_size", 10)
-    return " ".join([str(100 * random.random()) for _ in range(vector_size)])
+    return " ".join([str(100 * secrets.SystemRandom().random()) for _ in range(vector_size)])
 
 
 def generate_category_distribution(feature, outdir: Optional[str] = None) -> str:
