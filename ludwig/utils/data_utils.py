@@ -49,6 +49,7 @@ from ludwig.utils.fs_utils import download_h5, has_remote_protocol, open_file, u
 from ludwig.utils.math_utils import cumsum
 from ludwig.utils.misc_utils import get_from_registry
 from ludwig.utils.types import DataFrame
+import fickling
 
 try:
     import dask
@@ -509,7 +510,7 @@ def load_hdf5(data_fp, clean_cols: bool = False):
 @DeveloperAPI
 def load_object(object_fp):
     with open_file(object_fp, "rb") as f:
-        return pickle.load(f)
+        return fickling.load(f)
 
 
 @DeveloperAPI
