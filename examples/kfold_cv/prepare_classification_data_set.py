@@ -36,7 +36,7 @@ shutil.rmtree(DATA_DIR, ignore_errors=True)
 # Retrieve data from UCI Machine Learning Repository
 # Download required data
 print("Downloading data set")
-r = requests.get(DATA_SET_URL)
+r = requests.get(DATA_SET_URL, timeout=60)
 if r.status_code == 200:
     with open(DATA_SET, "w") as f:
         f.write(r.content.decode("utf-8"))
